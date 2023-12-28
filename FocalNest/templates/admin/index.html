@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocalNest: Adminstration</title>
+    <link rel="stylesheet" href="{% static 'admin/admin.css' %}" type="text/css">
+</head>
+<body>
+    <main>
+        {% if user.is_authenticated %}
+            <div class="AdminHomeSec">
+                <div class="CSTM_change_list">
+                    <div class="logo">
+                        <a href="{% url 'admin:index' %}"><img src="{% static 'images/logo.png' %}" alt="Logo"></a>
+                    </div>
+                    <div class="modelsList">
+                        <ul>
+                        {% if user.is_superuser %}
+                            <li class="slidebtn">
+                                <a href="javascript:void(0);">Super Admin</a>
+                                <div class="slidewrap">
+                                <ul>
+                                    <li><a href="{% url 'admin:auth_user_changelist' %}">Mange Users</a></li>
+                                    <li><a href="{% url 'admin:auth_group_changelist' %}">Mange Groups</a></li>
+                                </ul>
+                                </div>
+                            </li>
+                            {% endif %}
+                            <li><a href="{% url 'admin:FocalNest_blogpost_changelist' %}">Blogs</a></li>
+                            <li><a href="{% url 'admin:FocalNest_enquiry_changelist' %}">Enquirys</a></li>
+                            <li><a href="{% url 'admin:FocalNest_gallery_changelist' %}">Gallery</a></li>
+                            <li><a href="{% url 'admin:FocalNest_servicepost_changelist' %}">Services</a></li>
+                            <li>
+                            {% if user.is_authenticated %}
+                                <form method="post" action="{% url 'admin:logout' %}?next={% url 'admin:login' %}">
+                                {% csrf_token %}
+                                <button type="submit">Logout</button>
+                                </form>
+                            {% endif %}
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+        <script type="text/javascript">
+            window.location.href = "{% url 'admin:login' %}";
+        </script>
+        {% endif %}
+    </main>
+</body>
+</html>
